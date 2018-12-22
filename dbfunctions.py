@@ -25,7 +25,7 @@ class Cos(Func):
     name = 'Cos'
 
 
-class Acos(Func):
+class ACos(Func):
     """
     SQL function for calculating the arccosine.
     """

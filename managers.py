@@ -2,10 +2,10 @@ from django.db import models
 
 try:
     # Try to import math functions from django core (Django >= 2.2)
-    from django.db.models.functions.math import Acos, Cos, Radians, Sin
+    from django.db.models.functions.math import ACos, Cos, Radians, Sin
 except ImportError:
     # Import custom math functions as fallback
-    from dbfunctions import Acos, Cos, Radians, Sin
+    from dbfunctions import ACos, Cos, Radians, Sin
 
 
 class LocationManager(models.Manager):
@@ -23,6 +23,6 @@ class LocationManager(models.Manager):
         :return: Query set of found locations
         """
         earth_radius = 3959 if radius_unit == 'miles' else 6371
-        return self.get_queryset().annotate(distance=(earth_radius * Acos(
+        return self.get_queryset().annotate(distance=(earth_radius * ACos(
             Cos(Radians(latitude)) * Cos(Radians(mid_point[0])) * Cos(Radians(mid_point[1]) - Radians(longitude)) + Sin(
                 Radians(latitude)) * Sin(Radians(mid_point[0]))))).filter(distance__lte=radius)
