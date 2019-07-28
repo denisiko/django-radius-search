@@ -1,7 +1,7 @@
 from django.db import models
 
 try:
-    # Try to import math functions from django core (Django >= 2.2)
+    # Import math functions from Django core (Django >= 2.2)
     from django.db.models.functions.math import ACos, Cos, Radians, Sin
 except ImportError:
     # Import custom math functions as fallback
