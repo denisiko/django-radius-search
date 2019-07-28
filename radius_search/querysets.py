@@ -8,9 +8,9 @@ except ImportError:
     from dbfunctions import ACos, Cos, Radians, Sin
 
 
-class LocationManager(models.Manager):
+class LocationManager(models.QuerySet):
     """
-    Manager class for location models.
+    Query set class for location models.
     """
     def perimeter(self, mid_point, radius, radius_unit='km', latitude='latitude', longitude='longitude'):
         """
@@ -20,9 +20,17 @@ class LocationManager(models.Manager):
         :param radius_unit: should be either 'km' (default) or 'miles'
         :param latitude: query selector for latitude field
         :param longitude: query selector for longitude field
-        :return: Query set of found locations
+        :return: Annotated query set of found locations
         """
         earth_radius = 3959 if radius_unit == 'miles' else 6371
-        return self.get_queryset().annotate(distance=(earth_radius * ACos(
-            Cos(Radians(latitude)) * Cos(Radians(mid_point[0])) * Cos(Radians(mid_point[1]) - Radians(longitude)) + Sin(
-                Radians(latitude)) * Sin(Radians(mid_point[0]))))).filter(distance__lte=radius)
+        distance = (
+            earth_radius
+            * ACos(
+                Cos(Radians(latitude))
+                * Cos(Radians(mid_point[0]))
+                * Cos(Radians(mid_point[1]) - Radians(longitude))
+                + Sin(Radians(latitude))
+                * Sin(Radians(mid_point[0]))
+            )
+        )
+        return self.annotate(distance=distance).filter(distance__lte=radius)
