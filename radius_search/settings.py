@@ -1,0 +1,2 @@
+RADIUS_UNIT_KM = 'km'
+RADIUS_UNIT_MILES = 'mi'

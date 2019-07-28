@@ -1,1 +1,1 @@
-from querysets import LocationManager
+from querysets import LocationQuerySet
