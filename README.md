@@ -1,2 +1,2 @@
 # django-radius-search
-Simple manager tool for finding nearby locations in Django.
+Simple query tool for finding nearby locations in Django.
