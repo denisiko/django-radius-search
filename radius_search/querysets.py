@@ -1,6 +1,6 @@
 from django.db import models
 
-from .settings import EARTH_RADIUS_KM
+from .settings import DISTANCE_UNIT_KM, EARTH_RADIUS_CHOICES
 
 try:
     # Import math functions from Django core (Django >= 2.2)
@@ -14,11 +14,13 @@ class LocationQuerySet(models.QuerySet):
     """
     Query set class for location models.
     """
+    DISTANCE_UNIT = DISTANCE_UNIT_KM
+
     def perimeter(self, mid_point, radius, latitude='latitude', longitude='longitude'):
         """
         Returns a query set of locations in a specified radius (using the Haversine formula).
         :param mid_point: middle point coordinates of search radius (e.g. tuple of floats)
-        :param radius: search radius in km (default) or miles
+        :param radius: search radius in km (default) or miles depending on DISTANCE_UNIT
         :param latitude: query selector for latitude
         :param longitude: query selector for longitude
         :return: Annotated query set of found locations
@@ -35,10 +37,10 @@ class LocationQuerySet(models.QuerySet):
         )
         return self.annotate(distance=distance).filter(distance__lte=radius)
 
-    @staticmethod
-    def get_earth_radius():
+    def get_earth_radius(self):
         """
-        Returns the earth radius in km. Overwrite to use miles instead.
+        Returns the earth radius in km (default) or miles depending on DISTANCE_UNIT.
         :return: Integer value for earth radius
         """
-        return EARTH_RADIUS_KM
+        distance_unit = self.DISTANCE_UNIT or DISTANCE_UNIT_KM
+        return dict(EARTH_RADIUS_CHOICES).get(distance_unit)
