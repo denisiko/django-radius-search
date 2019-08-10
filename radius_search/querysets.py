@@ -14,13 +14,15 @@ class LocationQuerySet(models.QuerySet):
     """
     Query set class for location models.
     """
-    DISTANCE_UNIT = DISTANCE_UNIT_KM
+    def __init__(self, distance_unit=DISTANCE_UNIT_KM, *args, **kwargs):
+        self.distance_unit = distance_unit
+        super(LocationQuerySet, self).__init__(*args, **kwargs)
 
     def perimeter(self, mid_point, radius, latitude='latitude', longitude='longitude'):
         """
         Returns a query set of locations in a specified radius (using the Haversine formula).
         :param mid_point: middle point coordinates of search radius (e.g. tuple of floats)
-        :param radius: search radius in km (default) or miles depending on DISTANCE_UNIT
+        :param radius: search radius in km (default) or miles depending on distance_unit
         :param latitude: query selector for latitude
         :param longitude: query selector for longitude
         :return: Annotated query set of found locations
@@ -39,8 +41,7 @@ class LocationQuerySet(models.QuerySet):
 
     def get_earth_radius(self):
         """
-        Returns the earth radius in km (default) or miles depending on DISTANCE_UNIT.
+        Returns the earth radius in km (default) or miles depending on distance_unit.
         :return: Integer value for earth radius
         """
-        distance_unit = self.DISTANCE_UNIT or DISTANCE_UNIT_KM
-        return dict(EARTH_RADIUS_CHOICES).get(distance_unit)
+        return dict(EARTH_RADIUS_CHOICES).get(self.distance_unit)
