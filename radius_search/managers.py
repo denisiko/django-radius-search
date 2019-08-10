@@ -1,7 +1,7 @@
 from django.db.models.manager import BaseManager
 
-from radius_search import LocationQuerySet
-from radius_search.settings import DISTANCE_UNIT_KM
+from .querysets import LocationQuerySet
+from .settings import DISTANCE_UNIT_KM
 
 
 class LocationManager(BaseManager.from_queryset(LocationQuerySet)):
