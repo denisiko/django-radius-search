@@ -15,6 +15,12 @@ class LocationQuerySet(models.QuerySet):
     Query set class for location models.
     """
     def __init__(self, distance_unit=DISTANCE_UNIT_KM, *args, **kwargs):
+        """
+        Initializes the query set instance and sets distance_unit.
+        :param distance_unit: 'km' (default) or 'mi'
+        :param args: other arguments
+        :param kwargs: other arguments as keywords
+        """
         self.distance_unit = distance_unit
         super(LocationQuerySet, self).__init__(*args, **kwargs)
 
