@@ -18,5 +18,5 @@ setup(
         'Programming Language :: Python',
     ],
     requires=['django'],
-    packages=['radius_search'],
+    packages=['radius_search', 'radius_search.imperial'],
 )
