@@ -13,9 +13,8 @@ class LocationManager(BaseManager.from_queryset(LocationQuerySet)):
 
     def get_queryset(self):
         """
-        Returns the query set with DISTANCE_UNIT passed into it.
+        Returns the instantiated query set with DISTANCE_UNIT passed into it.
         :return: query set for locations
         """
-        queryset = super(LocationManager, self).get_queryset()
-        queryset.distance_unit = self.DISTANCE_UNIT
-        return queryset
+        return self._queryset_class(model=self.model, using=self._db, hints=self._hints,
+                                    distance_unit=self.DISTANCE_UNIT)
