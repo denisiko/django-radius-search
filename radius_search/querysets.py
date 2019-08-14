@@ -7,7 +7,7 @@ try:
     from django.db.models.functions.math import ACos, Cos, Radians, Sin
 except ImportError:
     # Import custom math functions as fallback
-    from dbfunctions import ACos, Cos, Radians, Sin
+    from .dbfunctions import ACos, Cos, Radians, Sin
 
 
 class LocationQuerySet(models.QuerySet):
