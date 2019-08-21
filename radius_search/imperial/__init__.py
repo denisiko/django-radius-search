@@ -1,2 +1,2 @@
-from managers import LocationManager
-from querysets import LocationQuerySet
+from .managers import LocationManager
+from .querysets import LocationQuerySet
